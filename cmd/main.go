@@ -17,12 +17,13 @@ func main() {
 	data, err := readFile(*pathPtr)
 	if err != nil {
 		fmt.Println(err)
-	} else {
-		fmt.Printf("min number is: %d\n", analyzer.Min(data))
-		fmt.Printf("max number is: %d\n", analyzer.Max(data))
-		fmt.Printf("avg number is: %0.1f\n", analyzer.Avg(data))
-		fmt.Printf("median number is: %d\n", analyzer.Median(data))
+		os.Exit(0)
 	}
+	fmt.Printf("min number is: %d\n", analyzer.Min(data))
+	fmt.Printf("max number is: %d\n", analyzer.Max(data))
+	fmt.Printf("avg number is: %0.1f\n", analyzer.Avg(data))
+	fmt.Printf("median number is: %d\n", analyzer.Median(data))
+
 	fmt.Printf("time of executing: %v\n", time.Since(t))
 }
 func readFile(path string) ([]int, error) {
@@ -30,7 +31,7 @@ func readFile(path string) ([]int, error) {
 
 	file, err := os.Open(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error while opening the file %v", err)
 	}
 	defer file.Close()
 
@@ -38,9 +39,18 @@ func readFile(path string) ([]int, error) {
 	for scanner.Scan() {
 		num, err := strconv.Atoi(scanner.Text())
 		if err != nil {
-			fmt.Printf("error while reading numbers from the file %v", err)
+			return nil, fmt.Errorf("error while converting numbers from the file: %v", err)
 		}
 		dataArr = append(dataArr, num)
 	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("error during file scanning: %v", err)
+	}
+
+	if len(dataArr) == 0 {
+		return nil, fmt.Errorf("the file is empty")
+	}
+
 	return dataArr, nil
 }
