@@ -19,21 +19,33 @@ func main() {
 		fmt.Println(err)
 		os.Exit(0)
 	}
-	minimum, maximum, median, avg := analyzer.ProcessNumericData(data)
+	minimum, maximum, median, avg, err := analyzer.ProcessNumericData(data)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(0)
+	}
 
 	fmt.Printf("min number is: %d\n", minimum)
 	fmt.Printf("min number is: %d\n", maximum)
 	fmt.Printf("median number is: %0.1f\n", median)
 	fmt.Printf("avg number is: %0.1f\n", avg)
 
-	increasingSequence := analyzer.FindSequences(data, true)
+	increasingSequence, err := analyzer.FindSequences(data, true)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(0)
+	}
 	if increasingSequence != nil {
 		fmt.Printf("max increasing sequence is: %v\n", increasingSequence)
 	} else {
 		fmt.Println("max increasing sequence doesn't exist in this file")
 	}
 
-	decreasingSequence := analyzer.FindSequences(data, false)
+	decreasingSequence, err := analyzer.FindSequences(data, false)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(0)
+	}
 	if decreasingSequence != nil {
 		fmt.Printf("max decreasing sequence is: %v\n", decreasingSequence)
 	} else {

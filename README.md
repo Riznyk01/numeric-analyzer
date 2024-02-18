@@ -2,6 +2,7 @@
 
 - [Installation](#installation)
 - [Run](#run)
+- [Tests](#tests)
 
 ## Installation
 
@@ -22,4 +23,12 @@ To run the application, use the following command:
 
 ```bash
 ./numan -path=pathtofile
+```
+
+## Tests
+
+To run tests, use the following command:
+
+```bash
+make test
 ```

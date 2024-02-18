@@ -1,10 +1,18 @@
 package analyzer
 
 import (
+	"errors"
 	"sort"
 )
 
-func ProcessNumericData(nums []int) (min, max int, median, avg float32) {
+var ErrDataIsEmpty = errors.New("input data is empty, nothing to process")
+
+func ProcessNumericData(nums []int) (min, max int, median, avg float32, err error) {
+
+	if len(nums) == 0 {
+		return 0, 0, 0.0, 0.0, ErrDataIsEmpty
+	}
+
 	sortedNums := make([]int, len(nums))
 	sum := 0
 
@@ -25,10 +33,15 @@ func ProcessNumericData(nums []int) (min, max int, median, avg float32) {
 		median = float32(sortedNums[n/2])
 	}
 
-	return min, max, median, avg
+	return min, max, median, avg, nil
 }
 
-func FindSequences(nums []int, incr bool) [][]int {
+func FindSequences(nums []int, incr bool) ([][]int, error) {
+
+	if len(nums) == 0 {
+		return nil, ErrDataIsEmpty
+	}
+
 	result := [][]int{{}}
 	currentSequence := make([]int, 0)
 	appendNext, currentSequenceProcessed := false, false
@@ -68,7 +81,7 @@ func FindSequences(nums []int, incr bool) [][]int {
 		}
 	}
 	if len(result) > 0 && len(result[0]) > 0 {
-		return result
+		return result, nil
 	}
-	return nil
+	return nil, nil
 }
