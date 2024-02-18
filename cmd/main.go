@@ -26,40 +26,36 @@ func main() {
 	}
 
 	fmt.Printf("min number is: %d\n", minimum)
-	fmt.Printf("min number is: %d\n", maximum)
-	fmt.Printf("median number is: %0.1f\n", median)
-	fmt.Printf("avg number is: %0.1f\n", avg)
+	fmt.Printf("max number is: %d\n", maximum)
+	fmt.Printf("median number is: %0.2f\n", median)
+	fmt.Printf("avg number is: %0.2f\n", avg)
 
 	increasingSequence, err := analyzer.FindSequences(data, true)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(0)
-	}
-	if increasingSequence != nil {
-		fmt.Printf("max increasing sequence is: %v\n", increasingSequence)
-	} else {
-		fmt.Println("max increasing sequence doesn't exist in this file")
-	}
-
+	printSequence("increasing", increasingSequence, err)
 	decreasingSequence, err := analyzer.FindSequences(data, false)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(0)
-	}
-	if decreasingSequence != nil {
-		fmt.Printf("max decreasing sequence is: %v\n", decreasingSequence)
-	} else {
-		fmt.Println("max decreasing sequence doesn't exist in this file")
-	}
+	printSequence("decreasing", decreasingSequence, err)
 
 	fmt.Printf("time of executing: %v\n", time.Since(t))
 }
+
+func printSequence(sequenceType string, sequence [][]int, err error) {
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(0)
+	}
+	if sequence != nil {
+		fmt.Printf("max %s sequence is: %v\n", sequenceType, sequence)
+	} else {
+		fmt.Printf("max %s sequence doesn't exist in this file\n", sequenceType)
+	}
+}
+
 func readFile(path string) ([]int, error) {
 	dataArr := make([]int, 0)
 
 	file, err := os.Open(path)
 	if err != nil {
-		return nil, fmt.Errorf("error while opening the file %v", err)
+		return nil, fmt.Errorf("failed to open the file %v", err)
 	}
 	defer file.Close()
 
