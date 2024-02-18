@@ -29,22 +29,39 @@ func TestProcessNumericData(t *testing.T) {
 	}
 }
 
-func TestFindSequence(t *testing.T) {
+func TestFindSequences(t *testing.T) {
 	testCases := []struct {
 		d           []int
 		seqType     bool
-		expectedSeq []int
+		expectedSeq [][]int
 	}{
-		{[]int{1, 2, 3, 4, 5, 6}, true, []int{1, 2, 3, 4, 5, 6}},
-		{[]int{1, 2, 3, 4, 5, 6, 0, 1, 2}, true, []int{1, 2, 3, 4, 5, 6}},
-		{[]int{1, 2, 3, 4, 5, 6, 0, 1, 2, 1, 2, 3, 4, 5, 6, 7}, true, []int{1, 2, 3, 4, 5, 6, 7}},
-		{[]int{6, 5, 4, 3, 2, 1}, false, []int{6, 5, 4, 3, 2, 1}},
-		{[]int{6, 5, 4, 3, 2, 1, 3, 2, 1}, false, []int{6, 5, 4, 3, 2, 1}},
-		{[]int{7, 6, 5, 4, 3, 2, 1, 3, 2, 1, 6, 5, 4, 3, 2, 1}, false, []int{7, 6, 5, 4, 3, 2, 1}},
-		{[]int{7, 6, 5, 4, 3, 2, 1, 3, 2, 1, 6, 5, 4, 3, 2, 1, -100}, false, []int{7, 6, 5, 4, 3, 2, 1}},
+		{[]int{1, 2, 3, 4, 5, 6}, true, [][]int{
+			{1, 2, 3, 4, 5, 6},
+		}},
+		{[]int{1, 2, 3, 4, 5, 6, 0, 1, 2}, true, [][]int{
+			{1, 2, 3, 4, 5, 6},
+		}},
+		{[]int{1, 2, 3, 4, 5, 6, 0, 1, 2, 1, 2, 3, 4, 5, 6, 7}, true, [][]int{
+			{1, 2, 3, 4, 5, 6, 7},
+		}},
+		{[]int{-100, 1, 2, 3, 4, 5, 6, 0, 1, 2, 1, 2, 3, 4, 5, 6, 7}, true, [][]int{
+			{-100, 1, 2, 3, 4, 5, 6}, {1, 2, 3, 4, 5, 6, 7},
+		}},
+		{[]int{6, 5, 4, 3, 2, 1}, false, [][]int{
+			{6, 5, 4, 3, 2, 1},
+		}},
+		{[]int{6, 5, 4, 3, 2, 1, 3, 2, 1}, false, [][]int{
+			{6, 5, 4, 3, 2, 1},
+		}},
+		{[]int{7, 6, 5, 4, 3, 2, 1, 3, 2, 1, 6, 5, 4, 3, 2, 1}, false, [][]int{
+			{7, 6, 5, 4, 3, 2, 1},
+		}},
+		{[]int{7, 6, 5, 4, 3, 2, 1, 3, 2, 1, 6, 5, 4, 3, 2, 1, -100}, false, [][]int{
+			{7, 6, 5, 4, 3, 2, 1}, {6, 5, 4, 3, 2, 1, -100},
+		}},
 	}
 	for i, tc := range testCases {
-		result := FindSequence(tc.d, tc.seqType)
+		result := FindSequences(tc.d, tc.seqType)
 
 		if !reflect.DeepEqual(result, tc.expectedSeq) {
 			t.Errorf("Test case %d failed. Expected %v, got %v", i+1, tc.expectedSeq, result)

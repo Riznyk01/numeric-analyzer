@@ -28,31 +28,47 @@ func ProcessNumericData(nums []int) (min, max int, median, avg float32) {
 	return min, max, median, avg
 }
 
-func FindSequence(nums []int, incr bool) []int {
-	result := make([]int, 0)
-	tmp := make([]int, 1)
-	tmp[0] = nums[0]
+func FindSequences(nums []int, incr bool) [][]int {
+	result := [][]int{{}}
+	currentSequence := make([]int, 0)
+	appendNext, currentSequenceProcessed := false, false
 
+	// Check length of currentSequence.
+	// If greater than any sequences in the result, set result to nil and append currentSequence.
+	// If a sequence of this length already exists in the result, add current sequence.
 	fc := func() {
-		if len(tmp) > len(result) {
-			result = make([]int, len(tmp))
-			copy(result, tmp)
+		if len(currentSequence) > len(result[0]) {
+			result = nil
+			result = append(result, currentSequence)
+		} else if len(currentSequence) == len(result[0]) && len(currentSequence) > 0 {
+			result = append(result, currentSequence)
 		}
+		currentSequenceProcessed = true
+		currentSequence = nil
 	}
 
-	for i := 1; i < len(nums); i++ {
-		if (incr && nums[i] > nums[i-1]) || (!incr && nums[i] < nums[i-1]) {
-			tmp = append(tmp, nums[i])
-			fc()
+	for i := 0; i < len(nums)-1; i++ {
+		if (incr && nums[i] < nums[i+1]) || (!incr && nums[i] > nums[i+1]) {
+			currentSequence = append(currentSequence, nums[i])
+			appendNext = true
+			currentSequenceProcessed = false
 		} else {
+			if appendNext {
+				currentSequence = append(currentSequence, nums[i])
+				appendNext = false
+			}
 			fc()
-			tmp = []int{nums[i]}
+		}
+		if i == len(nums)-2 && !currentSequenceProcessed {
+			if appendNext {
+				currentSequence = append(currentSequence, nums[i+1])
+				appendNext = false
+			}
+			fc()
 		}
 	}
-
-	if len(result) < 2 {
-		return nil
-	} else {
+	if len(result) > 0 && len(result[0]) > 0 {
 		return result
 	}
+	return nil
 }
