@@ -4,27 +4,55 @@ import (
 	"sort"
 )
 
-func Min(nums []int) int {
-	sort.Ints(nums)
-	return nums[0]
-}
-
-func Max(nums []int) int {
-	sort.Ints(nums)
-	return nums[len(nums)-1]
-}
-
-func Avg(nums []int) float64 {
+func ProcessNumericData(nums []int) (min, max int, median, avg float32) {
+	sortedNums := make([]int, len(nums))
 	sum := 0
+
+	copy(sortedNums, nums)
+	sort.Ints(sortedNums)
+	min = sortedNums[0]
+	max = sortedNums[len(sortedNums)-1]
+
 	for _, n := range nums {
 		sum += n
 	}
-	return float64(sum) / float64(len(nums))
-}
-func Median(nums []int) int {
-	n := len(nums) / 2
-	if len(nums)%2 == 0 {
-		return (nums[n] + nums[n-1]) / 2
+	avg = float32(sum) / float32(len(nums))
+
+	n := len(sortedNums)
+	if n%2 == 0 {
+		median = float32(sortedNums[n/2]+sortedNums[n/2-1]) / 2
+	} else {
+		median = float32(sortedNums[n/2])
 	}
-	return nums[n]
+
+	return min, max, median, avg
+}
+
+func FindSequence(nums []int, incr bool) []int {
+	result := make([]int, 0)
+	tmp := make([]int, 1)
+	tmp[0] = nums[0]
+
+	fc := func() {
+		if len(tmp) > len(result) {
+			result = make([]int, len(tmp))
+			copy(result, tmp)
+		}
+	}
+
+	for i := 1; i < len(nums); i++ {
+		if (incr && nums[i] > nums[i-1]) || (!incr && nums[i] < nums[i-1]) {
+			tmp = append(tmp, nums[i])
+			fc()
+		} else {
+			fc()
+			tmp = []int{nums[i]}
+		}
+	}
+
+	if len(result) < 2 {
+		return nil
+	} else {
+		return result
+	}
 }
