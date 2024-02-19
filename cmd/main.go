@@ -25,10 +25,10 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Printf("min number is: %d\n", minimum)
-	fmt.Printf("max number is: %d\n", maximum)
-	fmt.Printf("median number is: %0.2f\n", median)
-	fmt.Printf("avg number is: %0.2f\n", avg)
+	fmt.Printf("min: %d\n", minimum)
+	fmt.Printf("max: %d\n", maximum)
+	fmt.Printf("median: %0.2f\n", median)
+	fmt.Printf("avg: %0.2f\n", avg)
 
 	increasingSequence, err := analyzer.FindSequences(data, true)
 	printSequence("increasing", increasingSequence, err)
@@ -44,7 +44,7 @@ func printSequence(sequenceType string, sequence [][]int, err error) {
 		os.Exit(0)
 	}
 	if sequence != nil {
-		fmt.Printf("max %s sequence is: %v\n", sequenceType, sequence)
+		fmt.Printf("max %s sequence: %v\n", sequenceType, sequence)
 	} else {
 		fmt.Printf("max %s sequence doesn't exist in this file\n", sequenceType)
 	}
