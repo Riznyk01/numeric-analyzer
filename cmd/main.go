@@ -25,8 +25,8 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Printf("min: %d\n", minimum)
 	fmt.Printf("max: %d\n", maximum)
+	fmt.Printf("min: %d\n", minimum)
 	fmt.Printf("median: %0.2f\n", median)
 	fmt.Printf("avg: %0.2f\n", avg)
 
