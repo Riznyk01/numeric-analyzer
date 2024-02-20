@@ -18,23 +18,26 @@ The output of the application includes:
 3. The median.
 4. The arithmetic mean.
 
-The longest sequence of consecutive numbers:
-5. Increasing sequence.
-6. Decreasing sequence.
+The longest sequence of consecutive numbers:  
+5. Increasing sequence.  
+6. Decreasing sequence.  
 
 In case there are multiple sequences of the same length, the application outputs all of them.
 
 
 ## Installation
 
-To get started, clone the repository:
+Before proceeding, ensure that Go (Golang) is installed on your computer.  
+You can download and install it from the [official website](https://go.dev/dl/) if you haven't already.
+
+Once you have Go installed, clone the repository:
 
 ```bash
 git clone https://github.com/Riznyk01/numeric-analyzer.git
 cd numeric-analyzer
 ```
 
-## Build the application:
+## Build the application
 
 For Linux:
 ```bash
@@ -54,7 +57,7 @@ choco install make
 
 If Chocolatey is not installed on the Windows OS, follow the [instructions](https://chocolatey.org/install) (installs in one step).
 
-## Run the application:
+## Run the application
 
 To run the application, use the following command in the application's directory:
 ```bash
