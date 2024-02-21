@@ -7,33 +7,44 @@ import (
 
 var ErrDataIsEmpty = errors.New("input data is empty, nothing to process")
 
-func ProcessNumericData(nums []int) (min, max int, median, avg float32, err error) {
-
-	if len(nums) == 0 {
-		return 0, 0, 0.0, 0.0, ErrDataIsEmpty
-	}
-
+func CalculateMaxMinMedian(nums []int) (maximumValue, minimumValue int, medianValue float32, err error) {
 	sortedNums := make([]int, len(nums))
 	sum := 0
 
+	if len(nums) == 0 {
+		return 0, 0, 0.0, ErrDataIsEmpty
+	}
+
 	copy(sortedNums, nums)
 	sort.Ints(sortedNums)
-	min = sortedNums[0]
-	max = sortedNums[len(sortedNums)-1]
+	maximumValue, minimumValue = sortedNums[len(sortedNums)-1], sortedNums[0]
 
 	for _, n := range nums {
 		sum += n
 	}
-	avg = float32(sum) / float32(len(nums))
 
 	n := len(sortedNums)
 	if n%2 == 0 {
-		median = float32(sortedNums[n/2]+sortedNums[n/2-1]) / 2
+		medianValue = float32(sortedNums[n/2]+sortedNums[n/2-1]) / 2
 	} else {
-		median = float32(sortedNums[n/2])
+		medianValue = float32(sortedNums[n/2])
 	}
 
-	return min, max, median, avg, nil
+	return maximumValue, minimumValue, medianValue, nil
+}
+
+func CalculateAvg(nums []int) (avgValue float32, err error) {
+	sum := 0
+
+	if len(nums) == 0 {
+		return 0.0, ErrDataIsEmpty
+	}
+
+	for _, n := range nums {
+		sum += n
+	}
+
+	return float32(sum) / float32(len(nums)), nil
 }
 
 func FindSequences(nums []int, incr bool) ([][]int, error) {

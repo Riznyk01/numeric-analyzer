@@ -8,32 +8,52 @@ import (
 	"testing"
 )
 
-func TestProcessNumericData(t *testing.T) {
+func TestCalculateAvg(t *testing.T) {
 	testCases := []struct {
-		d              []int
-		expectedMin    int
-		expectedMax    int
-		expectedMedian float32
-		expectedAvg    float32
-		expectedError  error
+		d             []int
+		expectedAvg   float32
+		expectedError error
 	}{
-		{[]int{1, 2, 3, 4, 5}, 1, 5, 3.0, 3, nil},
-		{[]int{6, 5, 2, 3, 1, 4}, 1, 6, 3.5, 3.5, nil},
-		{[]int{-1, 0, 1}, -1, 1, 0.0, 0.0, nil},
-		{[]int{}, 0, 0, 0.0, 0.0, ErrDataIsEmpty},
+		{[]int{6, 5, 2, 3, 1, 4}, 3.5, nil},
+		{[]int{-1, 0, 1}, 0.0, nil},
+		{[]int{}, 0.0, ErrDataIsEmpty},
 	}
 	for i, tc := range testCases {
-		minimum, maximum, median, avg, err := ProcessNumericData(tc.d)
+		avg, err := CalculateAvg(tc.d)
 
 		if !errors.Is(err, tc.expectedError) {
 			t.Errorf("Test case %d failed. Expected error %v, got %v", i+1, tc.expectedError, err)
 		}
 
 		testFailed := fmt.Sprintf("Test case %d failed", i+1)
-		assert.Equal(t, tc.expectedMin, minimum, fmt.Sprintf("%s - minimum", testFailed))
-		assert.Equal(t, tc.expectedMax, maximum, fmt.Sprintf("%s - maximum", testFailed))
-		assert.Equal(t, tc.expectedMedian, median, fmt.Sprintf("%s - median", testFailed))
 		assert.Equal(t, tc.expectedAvg, avg, fmt.Sprintf("%s - avg", testFailed))
+	}
+}
+
+func TestCalculateMaxMinMedian(t *testing.T) {
+	testCases := []struct {
+		d              []int
+		expectedMax    int
+		expectedMin    int
+		expectedMedian float32
+		expectedError  error
+	}{
+		{[]int{1, 2, 3, 4, 5}, 5, 1, 3.0, nil},
+		{[]int{6, 5, 2, 3, 1, 4}, 6, 1, 3.5, nil},
+		{[]int{-1, 0, 1}, 1, -1, 0.0, nil},
+		{[]int{}, 0, 0, 0.0, ErrDataIsEmpty},
+	}
+	for i, tc := range testCases {
+		maximum, minimum, median, err := CalculateMaxMinMedian(tc.d)
+
+		if !errors.Is(err, tc.expectedError) {
+			t.Errorf("Test case %d failed. Expected error %v, got %v", i+1, tc.expectedError, err)
+		}
+
+		testFailed := fmt.Sprintf("Test case %d failed", i+1)
+		assert.Equal(t, tc.expectedMax, maximum, fmt.Sprintf("%s - maximum", testFailed))
+		assert.Equal(t, tc.expectedMin, minimum, fmt.Sprintf("%s - minimum", testFailed))
+		assert.Equal(t, tc.expectedMedian, median, fmt.Sprintf("%s - median", testFailed))
 	}
 }
 

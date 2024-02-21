@@ -19,7 +19,12 @@ func main() {
 		fmt.Println(err)
 		os.Exit(0)
 	}
-	minimum, maximum, median, avg, err := analyzer.ProcessNumericData(data)
+	maximum, minimum, median, err := analyzer.CalculateMaxMinMedian(data)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(0)
+	}
+	avg, err := analyzer.CalculateAvg(data)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(0)
