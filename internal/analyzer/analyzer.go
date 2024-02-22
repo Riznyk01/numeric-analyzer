@@ -2,7 +2,7 @@ package analyzer
 
 import (
 	"errors"
-	"sort"
+	"slices"
 )
 
 var ErrDataIsEmpty = errors.New("input data is empty, nothing to process")
@@ -16,7 +16,7 @@ func CalculateMaxMinMedian(nums []int) (maximumValue, minimumValue int, medianVa
 	}
 
 	copy(sortedNums, nums)
-	sort.Ints(sortedNums)
+	slices.Sort(sortedNums)
 	maximumValue, minimumValue = sortedNums[len(sortedNums)-1], sortedNums[0]
 
 	for _, n := range nums {
